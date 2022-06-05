@@ -8,6 +8,7 @@ import {filter} from "rxjs/operators";
   styleUrls: ['./product-list.component.css']
 
 })
+
 export class ProductListComponent implements OnInit {
   showImage: boolean = false;
   pageTitle: string = 'Product List! ';

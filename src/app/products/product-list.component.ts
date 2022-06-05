@@ -60,6 +60,10 @@ export class ProductListComponent implements OnInit {
   }
 
 
+  onNotify($event: any):void {
+  this.pageTitle = $event;
+  }
+
   ngOnInit(): void {
     this._listFilterx = 'Hammer';
   }

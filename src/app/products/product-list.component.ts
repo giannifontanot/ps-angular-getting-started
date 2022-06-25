@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {IProduct} from './IProduct';
 import {ProductService} from "./product.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'pm-products',
@@ -9,13 +10,16 @@ import {ProductService} from "./product.service";
   providers: [ProductService]
 })
 
-export class ProductListComponent implements OnInit {
+export class ProductListComponent implements OnInit, OnDestroy {
   showImage: boolean = false;
   pageTitle: string = 'Product List! ';
   imageWidth: number = 50;
   imageMargin: number = 2;
   filteredProducts: IProduct[] = [];
   products: IProduct[] = [];
+  errorMessage: string = "";
+  sub!: Subscription;
+
   private _listFilterx: string = "";
 
   constructor(private productService: ProductService) {
@@ -39,14 +43,22 @@ export class ProductListComponent implements OnInit {
     return this.products.filter((oneProduct: IProduct) => oneProduct.productName.toLocaleLowerCase().includes(keyword));
   }
 
-
   ngOnInit(): void {
-    this.products = this.productService.getPoducts()
-    this.filteredProducts = this.products;
+    this.productService.getPoducts().subscribe({
+      next: products => {
+        this.filteredProducts = products;
+        this.products = products;
+      },
+      error: err => this.errorMessage = err
+    });
     // this._listFilterx = 'Hammer';
   }
 
   onNotify($event: any): void {
     this.pageTitle = $event;
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 }

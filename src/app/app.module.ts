@@ -14,12 +14,12 @@ import {HttpClientModule} from "@angular/common/http";
   imports: [
     BrowserModule,
     HttpClientModule,
+    ProductsModule,
     RouterModule.forRoot([
       {path: 'welcome', component: WelcomeComponent},
       {path: '', redirectTo: 'welcome', pathMatch: 'full'},
       {path: '**', redirectTo: 'welcome', pathMatch: 'full'}
     ]),
-    ProductsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
